@@ -17,7 +17,9 @@ namespace ApiSamples
         const string url = @"{API_URL}";
         const string key = @"{API_KEY}"; // Store in a secure place
 
-        static async Task Main(string[] args)
+        static void Main(string[] args) => MainAsync(args).Wait();
+
+        static async Task MainAsync(string[] args)
         {
             Console.WriteLine("\n---- Starting ----\n");
 
@@ -71,7 +73,7 @@ namespace ApiSamples
 
         private static async Task CheckResponse(HttpResponseMessage response)
         {
-            var requestId = response.Headers.FirstOrDefault(x => x.Key.Equals("x-correlation-id", StringComparison.OrdinalIgnoreCase));
+            var requestId = response.Headers.FirstOrDefault(x => x.Key.Equals("x-correlation-id", StringComparison.OrdinalIgnoreCase)).Value.FirstOrDefault();
 
             if (response.IsSuccessStatusCode)
             {
@@ -114,11 +116,12 @@ namespace ApiSamples
         ///<summary>Just some fake product data</summary>
         private static Product[] _mockData = new[]
         {
-            new Product("1", "S01", "Mock Product 1", 5),
-            new Product("2", "S02", "Mock Product 2", 14),
-            new Product("3", "S03", "Mock Product 3", 1),
-            new Product("4", "S04", "Mock Product 4", 0.5m) {
-                Description = "Super pen with awesome widgets.."
+            new Product("Mock1", "MockS01", "Mock Product 1", 5),
+            new Product("Mock2", "MockS02", "Mock Product 2", 14),
+            new Product("Mock3", "MockS03", "Mock Product 3", 1),
+            new Product("Mock4", "MockS04", "Mock Product 4", 0.5m) {
+                Description = "Super pen with awesome widgets..",
+                Published = true
             }
         };
     }
